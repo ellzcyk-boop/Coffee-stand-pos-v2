@@ -3,95 +3,255 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#172a5c">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Coffee POS">
-<link rel="manifest" href="manifest.json">
-<title>Coffee Stand POS v2.1 v2</title>
+<meta name="theme-color" content="#172a5c">
+<title>Coffee Stand POS</title>
 <style>
-:root{--navy:#172a5c;--blue:#4ca6d8;--pink:#ee6da8;--yellow:#f6d65b;--cream:#fffaf0;--ink:#18233a;--muted:#667085;--line:#d9deea;--green:#3d8b61;--red:#b34b4b}
-*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#eef8ff,#fff3f8);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink)}
-button,input,select{font:inherit}button{min-height:44px;border:1px solid var(--line);border-radius:12px;background:#fff;padding:10px 13px;font-weight:800;cursor:pointer}button:active{transform:scale(.98)}
-header{background:var(--navy);color:#fff;padding:15px 17px;position:sticky;top:0;z-index:5}header h1{margin:0;font-size:22px}header small{opacity:.8}
-.wrap{max-width:1050px;margin:auto;padding:14px}.nav{display:flex;gap:8px;overflow:auto;margin-bottom:14px}.nav button{white-space:nowrap}.nav button.active{background:var(--navy);color:#fff;border-color:var(--navy)}
-.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:14px}.card{background:rgba(255,255,255,.96);border:1px solid var(--line);border-radius:18px;padding:15px;box-shadow:0 4px 18px rgba(23,42,92,.06)}
-h2,h3{margin:0 0 9px}.muted{font-size:13px;color:var(--muted)}label{font-size:12px;font-weight:900;text-transform:uppercase;display:block;margin-bottom:5px}
-input,select{width:100%;padding:12px;border:1px solid var(--line);border-radius:11px;background:#fff;color:var(--ink);font-size:16px}
-.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.primary{background:var(--pink);color:#fff;border-color:var(--pink)}.blue{background:var(--blue);color:#fff;border-color:var(--blue)}.yellow{background:var(--yellow);border-color:var(--yellow)}.danger{color:var(--red);border-color:#e0bcbc}
-.menu{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-top:12px}.menu button{text-align:left;padding:12px}.menu .price{font-size:18px;color:var(--navy);margin-top:4px}.menu .desc{font-size:11px;color:var(--muted);font-weight:500;display:block}
-.row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid #e7eaf0}.qty{display:flex;align-items:center;gap:6px}.qty button{width:34px;min-height:34px;padding:0}.total{font-size:30px;font-weight:950}.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px}.stat b{display:block;font-size:22px;margin-top:3px}
-.badge{display:inline-block;padding:5px 8px;border-radius:99px;font-size:11px;font-weight:900;background:#eaf5ee;color:var(--green)}.badge.due{background:#fff0c9;color:#775700}
-.customer-card{border:1px solid var(--line);border-radius:14px;padding:13px;margin:9px 0}.right{text-align:right}.empty{text-align:center;padding:25px;color:var(--muted)}
-.cat-tabs{display:flex;gap:7px;overflow:auto;margin:11px 0}.cat-tabs button{white-space:nowrap}.cat-tabs button.active{background:var(--blue);color:#fff;border-color:var(--blue)}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;padding:18px;z-index:20}.modal.hidden{display:none}.modal .card{width:min(520px,100%);max-height:90vh;overflow:auto}
-.menu-admin{display:grid;grid-template-columns:1fr auto auto;gap:7px;align-items:center}.menu-admin+.menu-admin{margin-top:7px}
-.notice{padding:10px 12px;border-radius:12px;background:#fff8d9;border:1px solid #ead36b;font-size:13px}.ok{background:#eaf5ee;border-color:#b8dcc7}
-.hidden{display:none!important}
-@media(max-width:720px){.grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}.menu{grid-template-columns:1fr 1fr}.menu-admin{grid-template-columns:1fr auto auto}}
+:root{--blue:#172a5c;--pink:#ef6f9b;--yellow:#ffd45a;--cream:#fffaf0;--ink:#182033;--muted:#697386;--green:#2f8f62;--red:#c94b55;--card:#fff;--line:#e6e8ee}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:16px}
+button,input,select{font:inherit}button{border:0;cursor:pointer}.app{max-width:1050px;margin:auto;min-height:100vh;padding-bottom:30px}
+header{background:var(--blue);color:#fff;padding:18px 18px 14px;position:sticky;top:0;z-index:10}
+h1{font-size:25px;margin:0 0 10px}.sub{opacity:.82;font-size:13px}
+nav{display:flex;gap:8px;overflow:auto;padding-top:12px}nav button{background:#fff1;color:#fff;padding:10px 13px;border-radius:12px;white-space:nowrap}nav button.active{background:var(--yellow);color:var(--blue);font-weight:800}
+main{padding:16px}.screen{display:none}.screen.active{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:14px;box-shadow:0 3px 14px #172a5c0d}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.grow{flex:1}
+label{font-weight:800;font-size:13px;display:block;margin-bottom:6px}.field{width:100%;padding:13px;border:1px solid #d8dce5;border-radius:12px;background:#fff}
+h2{font-size:21px;margin:0 0 12px}h3{font-size:17px;margin:0 0 9px}
+.btn{padding:12px 15px;border-radius:12px;font-weight:800}.primary{background:var(--blue);color:#fff}.pink{background:var(--pink);color:#fff}.yellow{background:var(--yellow);color:var(--blue)}.light{background:#eef1f6;color:var(--blue)}.danger{background:#fdebed;color:var(--red)}.success{background:#e8f6ef;color:var(--green)}
+.big-total{font-size:34px;font-weight:900;color:var(--blue)}.muted{color:var(--muted);font-size:13px}
+.categories{display:flex;gap:8px;overflow:auto;margin:10px 0}.cat{background:#eef1f6;color:var(--blue);padding:9px 13px;border-radius:999px;white-space:nowrap}.cat.active{background:var(--pink);color:#fff}
+.menu-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.menu-btn{background:#fff;border:2px solid var(--line);border-radius:15px;padding:13px;text-align:left;min-height:76px}.menu-btn:active{transform:scale(.98)}.menu-name{font-weight:850}.price{font-weight:900;color:var(--pink);margin-top:4px}
+.order-line{display:grid;grid-template-columns:1fr auto auto;gap:9px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}.qty{display:flex;align-items:center;gap:6px}.qty button{width:34px;height:34px;border-radius:10px;background:#eef1f6;color:var(--blue);font-weight:900}.qty span{min-width:24px;text-align:center;font-weight:800}
+.badge{display:inline-block;padding:5px 9px;border-radius:999px;font-size:12px;font-weight:800}.paid{background:#e8f6ef;color:var(--green)}.unpaid{background:#fff1d1;color:#8b6200}
+.daybar{display:flex;gap:7px;margin-bottom:14px}.daybar button{flex:1;padding:10px 5px;border-radius:11px;background:#eef1f6;color:var(--blue);font-weight:800}.daybar button.active{background:var(--yellow)}
+.customer{display:flex;justify-content:space-between;gap:12px;align-items:center}.customer+.customer{border-top:1px solid var(--line);padding-top:12px;margin-top:12px}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.stat{background:#f7f8fb;border-radius:14px;padding:13px}.stat b{display:block;font-size:22px;margin-top:4px}
+.modal{position:fixed;inset:0;background:#0008;z-index:30;display:none;align-items:flex-end}.modal.show{display:flex}.sheet{background:#fff;width:100%;max-height:90vh;overflow:auto;border-radius:22px 22px 0 0;padding:18px}.close{float:right;background:#eef1f6;border-radius:10px;padding:8px}
+.menu-admin{display:grid;grid-template-columns:1fr auto auto auto;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}.menu-admin input{min-width:0}
+.notice{padding:12px;border-radius:12px;background:#eef5ff;color:var(--blue);font-size:13px}
+@media(min-width:700px){.menu-grid{grid-template-columns:repeat(3,1fr)}.stats{grid-template-columns:repeat(4,1fr)}.modal{align-items:center;justify-content:center}.sheet{max-width:720px;border-radius:22px}}
 </style>
 </head>
 <body>
-<header><h1>☕ Coffee Stand POS</h1><small id="headerDay">Weekend POS</small></header>
-<div class="wrap">
-<nav class="nav">
-<button class="active" data-view="order">New Purchase</button>
-<button data-view="customers">Customers</button>
-<button data-view="sales">Sales</button>
-<button data-view="menu">Menu</button>
-<button data-view="backup">Backup</button>
-</nav>
-
-<section id="view-order">
-<div class="grid">
-<div class="card">
-<h2>New Purchase</h2><div class="muted">Choose a customer, then tap items.</div>
-<div style="margin-top:10px"><label>Customer</label><input id="customerName" list="names" placeholder="e.g. Maisy" autocomplete="off"></div>
-<datalist id="names"></datalist>
-<div id="quickCustomers" class="toolbar"></div>
-<div class="cat-tabs" id="categories"></div>
-<div class="menu" id="menu"></div>
-</div>
-<div class="card">
-<h3 id="purchaseTitle">Current Purchase</h3><div id="orderList"></div>
-<div style="display:flex;justify-content:space-between;align-items:end;padding-top:12px"><strong>TOTAL</strong><span class="total" id="orderTotal">$0</span></div>
-<div class="actions"><button class="primary" id="savePurchase">Save Purchase</button><button id="clearPurchase">Clear</button></div>
-<div class="notice" style="margin-top:12px">Payment is checked separately by bank transfer. Saved purchases start as <b>Unpaid</b>.</div>
-</div>
-</div>
+<div class="app">
+<header>
+  <h1>☕ Coffee Stand POS</h1>
+  <div class="sub">Offline-first • Bank transfers handled separately</div>
+  <nav>
+    <button data-screen="purchase" class="active">New Purchase</button>
+    <button data-screen="customers">Customers</button>
+    <button data-screen="sales">Sales</button>
+    <button data-screen="menu">Menu</button>
+    <button data-screen="backup">Backup</button>
+  </nav>
+</header>
+<main>
+<section id="purchase" class="screen active">
+  <div class="card">
+    <h2>New Purchase</h2>
+    <label>Customer name</label>
+    <input id="customerName" class="field" placeholder="e.g. Sarah">
+    <div class="categories" id="categories"></div>
+    <div class="menu-grid" id="menuGrid"></div>
+  </div>
+  <div class="card">
+    <h3>Current order</h3>
+    <div id="orderLines"><div class="muted">No items yet.</div></div>
+    <div class="row" style="margin-top:14px">
+      <div class="grow"><div class="muted">Total</div><div class="big-total" id="orderTotal">$0.00</div></div>
+      <button class="btn light" id="clearOrder">Clear</button>
+      <button class="btn primary" id="saveOrder">Save Purchase</button>
+    </div>
+  </div>
 </section>
 
-<section id="view-customers" class="hidden"><div class="card"><h2>Customers</h2><div class="muted">Weekend ledger: multiple purchases stay under the same name.</div><div style="margin-top:10px"><input id="customerSearch" placeholder="Search customers"></div><div id="customersList"></div></div></section>
+<section id="customers" class="screen">
+  <div class="card">
+    <h2>Customers</h2>
+    <input id="customerSearch" class="field" placeholder="Search customer">
+  </div>
+  <div id="customerList"></div>
+</section>
 
-<section id="view-sales" class="hidden"><div class="card">
-<h2>Sales</h2><div class="toolbar"><button class="yellow" id="newDay">Start New Day</button><span class="notice" id="dayNotice"></span></div>
-<div class="stats"><div class="stat"><span class="muted">PURCHASES</span><b id="statPurchases">0</b></div><div class="stat"><span class="muted">ITEMS SOLD</span><b id="statItems">0</b></div><div class="stat"><span class="muted">SALES</span><b id="statSales">$0</b></div><div class="stat"><span class="muted">OUTSTANDING</span><b id="statDue">$0</b></div></div>
-<h3 style="margin-top:18px">Item totals</h3><div id="itemSales"></div><h3 style="margin-top:18px">Daily totals</h3><div id="dailySales"></div>
-</div></section>
+<section id="sales" class="screen">
+  <div class="card">
+    <h2>Sales</h2>
+    <div class="daybar" id="salesDays"></div>
+    <div class="stats" id="salesStats"></div>
+  </div>
+  <div class="card">
+    <h3>Items sold</h3>
+    <div id="itemStats"></div>
+  </div>
+  <div class="card">
+    <h3>Purchases</h3>
+    <div id="salesList"></div>
+  </div>
+</section>
 
-<section id="view-menu" class="hidden"><div class="card">
-<h2>Menu Manager</h2><div class="muted">Add, edit, hide or reactivate items. Hidden items stay in historical sales.</div>
-<div class="toolbar"><button class="primary" id="addItem">+ Add Item</button></div><div id="menuAdmin"></div>
-</div></section>
+<section id="menu" class="screen">
+  <div class="card">
+    <h2>Menu Manager</h2>
+    <div class="notice">You can add, edit, hide or reactivate menu items. Past sales keep the price and name that were used when the purchase was made.</div>
+    <div id="menuAdmin" style="margin-top:12px"></div>
+    <button class="btn yellow" id="addMenu" style="margin-top:12px">＋ Add Menu Item</button>
+  </div>
+</section>
 
-<section id="view-backup" class="hidden"><div class="card">
-<h2>Backup & Restore</h2><p class="muted">The POS stores its working data locally on this device. Export a backup at the end of each day.</p>
-<div class="toolbar"><button class="blue" id="exportBtn">Export Backup</button><button id="importBtn">Restore Backup</button><input id="fileInput" type="file" accept=".json,application/json" class="hidden"></div>
-<div id="backupStatus" class="notice">No backup recorded yet.</div>
-<h3 style="margin-top:18px">Weekend controls</h3><button class="danger" id="resetAll">Clear all POS data</button>
-</div></section>
+<section id="backup" class="screen">
+  <div class="card">
+    <h2>Backup & Reset</h2>
+    <p class="muted">Your sales and customer data are stored on this iPad. Back up regularly, especially before changing devices or clearing browser data.</p>
+    <div class="row">
+      <button class="btn primary" id="exportBackup">Export Backup</button>
+      <label class="btn light" style="cursor:pointer">Import Backup<input id="importBackup" type="file" accept=".json,application/json" hidden></label>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Start fresh</h3>
+    <p class="muted">This removes all customers and sales from this POS. Your menu remains.</p>
+    <button class="btn danger" id="clearData">Clear Customers & Sales</button>
+  </div>
+</section>
+</main>
 </div>
 
-<div id="modal" class="modal hidden"><div class="card">
-<h2 id="modalTitle">Menu Item</h2>
-<div class="field"><label>Name</label><input id="editName"></div>
-<div class="field"><label>Price</label><input id="editPrice" type="number" min="0" step="0.50"></div>
-<div class="field"><label>Category</label><input id="editCategory" placeholder="Drinks, Food, Lollies, Specials"></div>
-<div class="field"><label>Description</label><input id="editDesc" placeholder="Optional"></div>
-<div class="actions"><button class="primary" id="saveItem">Save Item</button><button id="cancelItem">Cancel</button></div>
-</div></div>
+<div class="modal" id="modal">
+  <div class="sheet" id="sheet"></div>
+</div>
 
-<script src="app.js"></script>
-<script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(()=>{});}</script>
+<script>
+const DB="CoffeeStandPOS_Final_1";
+const defaultMenu=[
+ {id:"coffee",name:"Coffee",price:4,cat:"Drinks",visible:true},
+ {id:"krispy",name:"Krispy Kreme",price:3,cat:"Food",visible:true},
+ {id:"combo",name:"Coffee and donut",price:6,cat:"Specials",visible:true},
+ {id:"four-krispy",name:"4 Krispy Kremes",price:10,cat:"Specials",visible:true},
+ {id:"caramel",name:"Caramel slice",price:3,cat:"Food",visible:true},
+ {id:"banana-bread",name:"Banana bread",price:3,cat:"Food",visible:true},
+ {id:"python",name:"Killer Python",price:1,cat:"Lollies",visible:true},
+ {id:"zappos",name:"Zappos",price:2,cat:"Lollies",visible:true}
+];
+let state={menu:structuredClone(defaultMenu),customers:[],purchases:[],day:"Friday"};
+let order=[],category="All";
+
+const $=id=>document.getElementById(id);
+function money(n){return "$"+Number(n||0).toFixed(2)}
+function uid(p="id"){return p+"_"+Date.now()+"_"+Math.random().toString(36).slice(2,8)}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+async function openDB(){
+ return new Promise((res,rej)=>{
+  const r=indexedDB.open(DB,1);
+  r.onupgradeneeded=()=>r.result.createObjectStore("state");
+  r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error)
+ })
+}
+async function load(){
+ const db=await openDB();
+ return new Promise(res=>{const r=db.transaction("state").objectStore("state").get("main");r.onsuccess=()=>{if(r.result)state=r.result;res()}})
+}
+async function save(){
+ const db=await openDB(); db.transaction("state","readwrite").objectStore("state").put(state,"main")
+}
+function customerId(name){
+ const clean=name.trim();
+ let c=state.customers.find(x=>x.name.toLowerCase()===clean.toLowerCase());
+ if(!c){c={id:uid("cust"),name:clean};state.customers.push(c)}
+ return c.id
+}
+function customerPurchases(cid){return state.purchases.filter(p=>p.customerId===cid)}
+function renderCategories(){
+ const cats=["All",...new Set(state.menu.filter(m=>m.visible).map(m=>m.cat))];
+ $("categories").innerHTML=cats.map(c=>`<button class="cat ${c===category?"active":""}" onclick="setCategory('${esc(c)}')">${esc(c)}</button>`).join("")
+}
+window.setCategory=c=>{category=c;renderPurchase()}
+function renderPurchase(){
+ renderCategories();
+ const items=state.menu.filter(m=>m.visible&&(category==="All"||m.cat===category));
+ $("menuGrid").innerHTML=items.map(m=>`<button class="menu-btn" onclick="addItem('${m.id}')"><div class="menu-name">${esc(m.name)}</div><div class="price">${money(m.price)}</div></button>`).join("");
+ $("orderLines").innerHTML=order.length?order.map((l,i)=>`<div class="order-line"><div><b>${esc(l.name)}</b><div class="muted">${money(l.price)} each</div></div><div class="qty"><button onclick="changeQty(${i},-1)">−</button><span>${l.qty}</span><button onclick="changeQty(${i},1)">+</button></div><b>${money(l.price*l.qty)}</b></div>`).join(""):"<div class='muted'>No items yet.</div>";
+ $("orderTotal").textContent=money(order.reduce((s,l)=>s+l.price*l.qty,0))
+}
+window.addItem=id=>{const m=state.menu.find(x=>x.id===id);if(!m)return;let l=order.find(x=>x.menuId===id);if(l)l.qty++;else order.push({menuId:id,name:m.name,price:m.price,qty:1});renderPurchase()}
+window.changeQty=(i,d)=>{order[i].qty+=d;if(order[i].qty<=0)order.splice(i,1);renderPurchase()}
+$("clearOrder").onclick=()=>{order=[];renderPurchase()}
+$("saveOrder").onclick=async()=>{
+ const name=$("customerName").value.trim();
+ if(!name)return alert("Please enter the customer's name.");
+ if(!order.length)return alert("Please add at least one item.");
+ const cid=customerId(name);
+ const lines=order.map(l=>({id:uid("line"),menuId:l.menuId,name:l.name,price:l.price,qty:l.qty}));
+ const total=lines.reduce((s,l)=>s+l.price*l.qty,0);
+ state.purchases.push({id:uid("sale"),customerId:cid,day:state.day,createdAt:new Date().toISOString(),lines,total,paid:false});
+ await save();order=[];$("customerName").value="";showScreen("customers");renderCustomers();
+}
+function showScreen(id){
+ document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("active",s.id===id));
+ document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("active",b.dataset.screen===id));
+ if(id==="customers")renderCustomers(); if(id==="sales")renderSales(); if(id==="menu")renderMenuAdmin();
+}
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>showScreen(b.dataset.screen));
+function renderCustomers(){
+ const q=$("customerSearch").value.trim().toLowerCase();
+ const cs=state.customers.filter(c=>c.name.toLowerCase().includes(q));
+ $("customerList").innerHTML=cs.length?cs.map(c=>{
+  const ps=customerPurchases(c.id), owing=ps.filter(p=>!p.paid).reduce((s,p)=>s+p.total,0), total=ps.reduce((s,p)=>s+p.total,0);
+  return `<div class="card"><div class="customer"><div><h3>${esc(c.name)}</h3><div class="muted">${ps.length} purchase${ps.length===1?"":"s"} • Weekend total ${money(total)}</div></div><div style="text-align:right"><div class="muted">Owing</div><div class="big-total" style="font-size:25px">${money(owing)}</div></div></div>
+  <div class="row" style="margin-top:12px"><button class="btn primary" onclick="openCustomer('${c.id}')">View History</button>${owing>0?`<button class="btn success" onclick="markAllPaid('${c.id}')">MARK ALL PAID</button>`:"<span class='badge paid'>PAID</span>"}<button class="btn danger" onclick="deleteCustomer('${c.id}')">Delete Customer</button></div></div>`
+ }).join(""):"<div class='card'><div class='muted'>No customers found.</div></div>"
+}
+$("customerSearch").oninput=renderCustomers;
+window.openCustomer=cid=>{
+ const c=state.customers.find(x=>x.id===cid), ps=customerPurchases(cid);
+ const owing=ps.filter(p=>!p.paid).reduce((s,p)=>s+p.total,0);
+ $("sheet").innerHTML=`<button class="close" onclick="closeModal()">✕</button><h2>${esc(c.name)}</h2><div class="stats"><div class="stat">Weekend total<b>${money(ps.reduce((s,p)=>s+p.total,0))}</b></div><div class="stat">Owing<b>${money(owing)}</b></div></div>
+ <div class="row" style="margin:14px 0">${owing>0?`<button class="btn success" onclick="markAllPaid('${cid}',true)">MARK ALL PAID</button>`:"<span class='badge paid'>EVERYTHING PAID</span>"}<button class="btn danger" onclick="deleteCustomer('${cid}',true)">Delete Customer</button></div>
+ <h3>Purchase history</h3>${ps.slice().reverse().map(p=>`<div class="card" style="box-shadow:none"><div class="row"><b>${p.day}</b><span class="badge ${p.paid?"paid":"unpaid"}">${p.paid?"Paid":"Unpaid"}</span><span class="grow"></span><b>${money(p.total)}</b></div><div class="muted" style="margin-top:7px">${p.lines.map(l=>`${l.qty} × ${esc(l.name)} (${money(l.price)})`).join(" • ")}</div>${!p.paid?`<button class="btn light" style="margin-top:9px" onclick="markPurchasePaid('${p.id}',true)">Mark this purchase paid</button>`:""}</div>`).join("")}`;
+ $("modal").classList.add("show")
+}
+function closeModal(){$("modal").classList.remove("show")}
+window.markPurchasePaid=async(pid,refresh)=>{
+ const p=state.purchases.find(x=>x.id===pid);if(p)p.paid=true;await save();renderCustomers();if(refresh)openCustomer(p.customerId)
+}
+window.markAllPaid=async(cid,refresh)=>{
+ const ps=customerPurchases(cid);if(!ps.some(p=>!p.paid))return;
+ if(!confirm("Mark all of this customer's unpaid purchases as PAID?"))return;
+ ps.forEach(p=>p.paid=true);await save();renderCustomers();if(refresh)openCustomer(cid)
+}
+window.deleteCustomer=async(cid,refresh)=>{
+ const c=state.customers.find(x=>x.id===cid);if(!c)return;
+ if(!confirm(`Delete ${c.name} and all of their purchases? This cannot be undone.`))return;
+ state.customers=state.customers.filter(x=>x.id!==cid);state.purchases=state.purchases.filter(p=>p.customerId!==cid);
+ await save();closeModal();renderCustomers();renderSales()
+}
+function renderSales(){
+ $("salesDays").innerHTML=["Friday","Saturday","Sunday"].map(d=>`<button class="${state.day===d?"active":""}" onclick="setDay('${d}')">${d}</button>`).join("");
+ const ps=state.purchases.filter(p=>p.day===state.day), revenue=ps.reduce((s,p)=>s+p.total,0), paid=ps.filter(p=>p.paid).reduce((s,p)=>s+p.total,0), owing=revenue-paid;
+ $("salesStats").innerHTML=`<div class="stat">Sales<b>${money(revenue)}</b></div><div class="stat">Paid<b>${money(paid)}</b></div><div class="stat">Owing<b>${money(owing)}</b></div><div class="stat">Purchases<b>${ps.length}</b></div>`;
+ const counts={};ps.forEach(p=>p.lines.forEach(l=>counts[l.name]=(counts[l.name]||0)+l.qty));
+ $("itemStats").innerHTML=Object.keys(counts).length?Object.entries(counts).sort((a,b)=>b[1]-a[1]).map(([n,q])=>`<div class="row" style="padding:8px 0;border-bottom:1px solid var(--line)"><span class="grow">${esc(n)}</span><b>${q}</b></div>`).join(""):"<div class='muted'>No sales for this day.</div>";
+ $("salesList").innerHTML=ps.slice().reverse().map(p=>{const c=state.customers.find(x=>x.id===p.customerId);return `<div style="padding:10px 0;border-bottom:1px solid var(--line)"><div class="row"><b>${esc(c?.name||"Unknown")}</b><span class="grow"></span><span class="badge ${p.paid?"paid":"unpaid"}">${p.paid?"Paid":"Unpaid"}</span><b>${money(p.total)}</b></div><div class="muted">${p.lines.map(l=>`${l.qty} × ${esc(l.name)}`).join(" • ")}</div></div>`}).join("")||"<div class='muted'>No purchases for this day.</div>";
+}
+window.setDay=async d=>{state.day=d;await save();renderSales()}
+function renderMenuAdmin(){
+ $("menuAdmin").innerHTML=state.menu.map((m,i)=>`<div class="menu-admin"><input class="field" value="${esc(m.name)}" onchange="editMenu('${m.id}','name',this.value)"><input class="field" type="number" step=".01" min="0" value="${m.price}" onchange="editMenu('${m.id}','price',this.value)" style="width:100px"><button class="btn ${m.visible?"light":"success"}" onclick="toggleMenu('${m.id}')">${m.visible?"Hide":"Show"}</button><button class="btn danger" onclick="removeMenu('${m.id}')">Delete</button></div>`).join("")
+}
+window.editMenu=async(id,k,v)=>{const m=state.menu.find(x=>x.id===id);if(!m)return;m[k]=k==="price"?Number(v):v;await save()}
+window.toggleMenu=async id=>{const m=state.menu.find(x=>x.id===id);if(m)m.visible=!m.visible;await save();renderMenuAdmin();renderPurchase()}
+window.removeMenu=async id=>{const m=state.menu.find(x=>x.id===id);if(!m)return;if(!confirm(`Delete ${m.name} from the menu? Existing sales are kept.`))return;m.visible=false;await save();renderMenuAdmin();renderPurchase()}
+$("addMenu").onclick=async()=>{const name=prompt("Menu item name:");if(!name?.trim())return;const price=Number(prompt("Price:","3"));if(!Number.isFinite(price)||price<0)return alert("Please enter a valid price.");const cat=prompt("Category:","Food")||"Food";state.menu.push({id:uid("menu"),name:name.trim(),price,cat:cat.trim()||"Food",visible:true});await save();renderMenuAdmin();renderPurchase()}
+$("exportBackup").onclick=()=>{
+ const blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="coffee-stand-pos-backup.json";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)
+}
+$("importBackup").onchange=async e=>{
+ const f=e.target.files[0];if(!f)return;try{const x=JSON.parse(await f.text());if(!x.menu||!x.customers||!x.purchases)throw 0;state=x;await save();alert("Backup restored.");location.reload()}catch{alert("That backup file could not be used.")}e.target.value=""
+}
+$("clearData").onclick=async()=>{if(!confirm("Clear ALL customers and sales? This cannot be undone unless you have a backup."))return;state.customers=[];state.purchases=[];await save();alert("Customers and sales cleared.");renderCustomers();renderSales()}
+load().then(()=>{renderPurchase();renderCustomers();renderSales();renderMenuAdmin()});
+if("serviceWorker" in navigator) window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js"));
+</script>
 </body>
 </html>
